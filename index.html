@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Senior UX Roadmap — Мар'яна Дерлиця</title>
+<meta name="description" content="Довготривалий learning roadmap для переходу на рівень Senior UX/UI Designer: дослідження, методології, шаблони, повторення.">
+<style>
+:root{
+  --bg:#f7f6f3; --surface:#ffffff; --surface-2:#f0eee9; --text:#1d1c1a; --muted:#6b675f; --line:#e2dfd8;
+  --accent:#3b5bdb; --accent-soft:#e7ecff; --ok:#2f9e44; --ok-soft:#e6f6ea; --warn:#e8590c; --warn-soft:#fff0e6; --crit:#c92a2a; --crit-soft:#ffe9e9;
+  --r1:#7048e8; --r2:#1c7ed6; --r3:#2b8a3e;
+  --radius:14px; --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#141413; --surface:#1d1d1b; --surface-2:#262624; --text:#ecebe7; --muted:#a3a097; --line:#33322f;
+    --accent:#8ea2ff; --accent-soft:#232a45; --ok:#69db7c; --ok-soft:#1d2e21; --warn:#ffa94d; --warn-soft:#332417; --crit:#ff8787; --crit-soft:#3a1f1f;
+    --r1:#b197fc; --r2:#74c0fc; --r3:#8ce99a; --shadow:none; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:-.01em}
+.brand small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs button{border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:999px;font:inherit;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--text);color:var(--bg)}
+nav.tabs button:hover:not([aria-selected="true"]){background:var(--surface-2);color:var(--text)}
+main{padding:28px 0 80px}
+section.view{display:none}
+section.view.active{display:block}
+h1{font-size:30px;line-height:1.2;letter-spacing:-.02em;margin:0 0 8px}
+h2{font-size:21px;letter-spacing:-.01em;margin:32px 0 12px}
+h3{font-size:16px;margin:0 0 6px}
+p.lead{color:var(--muted);font-size:16px;max-width:760px;margin:0 0 20px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.muted{color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.crit{background:var(--crit-soft);color:var(--crit)}
+.pill.high{background:var(--warn-soft);color:var(--warn)}
+.pill.mid{background:var(--accent-soft);color:var(--accent)}
+.pill.r1{color:var(--r1)} .pill.r2{color:var(--r2)} .pill.r3{color:var(--r3)}
+.stat{font-size:28px;font-weight:700;letter-spacing:-.02em}
+.bar{height:8px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.cycle{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.cycle .step{flex:1 1 200px;border-left:4px solid var(--c);padding:10px 14px;background:var(--surface);border-radius:10px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+select,input[type=text],textarea{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+textarea{width:100%;min-height:90px;resize:vertical}
+button.btn{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:7px 12px;border-radius:10px;cursor:pointer}
+button.btn:hover{border-color:var(--muted)}
+button.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.week{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:8px}
+.week.current{outline:2px solid var(--accent);outline-offset:1px}
+.week.done{opacity:.6}
+.week.done .wt{text-decoration:line-through}
+.week input[type=checkbox]{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+.wmeta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:4px;font-size:12px;color:var(--muted)}
+.wt{font-weight:600;margin-bottom:4px}
+.wbody{font-size:14px}
+.wbody b{font-weight:600}
+.wbody .row{margin-top:3px}
+.tlink{font-size:13px;border:0;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:6px;cursor:pointer;font-family:inherit;margin:2px 4px 0 0}
+.roundhead{margin:26px 0 10px;display:flex;align-items:baseline;gap:10px}
+.roundhead h2{margin:0}
+details.mod{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow)}
+details.mod>summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;gap:12px;align-items:center}
+details.mod>summary::-webkit-details-marker{display:none}
+details.mod>summary .num{width:34px;height:34px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;font-weight:700;flex:none}
+details.mod>summary .ttl{flex:1}
+details.mod>summary .ttl small{display:block;color:var(--muted);font-size:13px}
+details.mod[open]>summary{border-bottom:1px solid var(--line)}
+.modbody{padding:16px 18px;display:grid;gap:16px}
+.why{background:var(--warn-soft);border-radius:10px;padding:10px 14px;font-size:14px}
+.why b{color:var(--warn)}
+ul.clean{margin:0;padding-left:18px}
+ul.clean li{margin:3px 0}
+.kv{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:6px}
+.fc-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.fc{perspective:900px;min-height:132px;cursor:pointer}
+.fc .in{position:relative;width:100%;height:100%;min-height:132px;transition:transform .45s;transform-style:preserve-3d}
+.fc.flip .in{transform:rotateY(180deg)}
+.fc .f,.fc .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;padding:14px;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;font-size:14px;overflow:auto}
+.fc .f{background:var(--surface-2);font-weight:600}
+.fc .b{background:var(--accent-soft);transform:rotateY(180deg)}
+.tpl{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.tpl-list{display:flex;flex-direction:column;gap:4px;max-height:72vh;overflow:auto;position:sticky;top:80px}
+.tpl-list button{text-align:left;font:inherit;border:1px solid transparent;background:transparent;color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
+.tpl-list button small{display:block;color:var(--muted);font-size:12px}
+.tpl-list button.active{background:var(--surface);border-color:var(--line)}
+pre.doc{white-space:pre-wrap;word-break:break-word;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:10px 0 0;max-height:68vh;overflow:auto}
+.review{max-width:620px;margin:0 auto;text-align:center}
+.review .fc{min-height:220px}
+.review .fc .in,.review .fc .f,.review .fc .b{min-height:220px;font-size:17px;align-items:center;text-align:center}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:10px;transition:transform .25s;z-index:50}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.src li{margin:4px 0}
+.note-saved{font-size:12px;color:var(--ok);height:16px}
+table.mini{width:100%;border-collapse:collapse;font-size:14px}
+table.mini td,table.mini th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+table.mini th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:13px}
+@media (max-width:760px){ .tpl{grid-template-columns:1fr} .tpl-list{position:static;max-height:none} h1{font-size:24px} }
+@media print{ header.top,nav,.toolbar,footer{display:none} section.view{display:block!important} }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">Senior UX Roadmap<small>довготривалий план із циклами повторення</small></div>
+  <nav class="tabs" role="tablist">
+    <button data-view="overview">Огляд</button>
+    <button data-view="route">Маршрут</button>
+    <button data-view="modules">Модулі</button>
+    <button data-view="templates">Шаблони</button>
+    <button data-view="review">Повторення</button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+<!-- OVERVIEW -->
+<section class="view" id="overview">
+  <h1>Від сильного Middle до Senior UX</h1>
+  <p class="lead">План побудований на розборі технічної співбесіди на Senior UI/UX (листопад 2026). Ритм: <b>одна сесія = один тиждень = 2–3 години</b>. Без дедлайну: кожна тема проходить три цикли, щоб знання закріпилися, а потім цикл повторюється на новому матеріалі.</p>
+
+  <div class="grid g3" id="stats"></div>
+
+  <h2>Як працює спіраль</h2>
+  <div class="cycle">
+    <div class="step" style="--c:var(--r1)"><span class="pill r1">Цикл 1 · Фундамент</span><p>Теорія, термінологія та перша маленька вправа за шаблоном. Мета: правильно називати методи і розуміти, коли який застосовувати.</p></div>
+    <div class="step" style="--c:var(--r2)"><span class="pill r2">Цикл 2 · Практика</span><p>Реальне застосування: на петпроєкті (додаток для садівників) і на робочих задачах. Мета: мати власні артефакти.</p></div>
+    <div class="step" style="--c:var(--r3)"><span class="pill r3">Цикл 3 · Подача</span><p>Оформлення в кейс, презентація, STAR-історія. Мета: впевнено розповідати про досвід на співбесідах і перед стейкхолдерами.</p></div>
+    <div class="step" style="--c:var(--muted)"><span class="pill">Цикл ∞ · Повтор</span><p>Після циклу 3 повтори цикл 2 на новому продукті чи домені. Раз на квартал проходь флешкартки і роби міні-аудит.</p></div>
+  </div>
+
+  <h2>Карта прогалин зі співбесіди</h2>
+  <div class="card"><table class="mini" id="gapTable"><thead><tr><th>Тема</th><th>Що показала співбесіда</th><th>Пріоритет</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Що вже є сильною стороною (не забувай про це на співбесідах)</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Аналітика і KPI</h3><p class="muted">KPI tree від North Star, налаштування GA4, пошук прогалин у даних, теги разом з розробником.</p></div>
+    <div class="card"><h3>Дизайн-системи та handoff</h3><p class="muted">Tokens, variables, Atomic Design, JSON-токени, звірка реалізації, технічні обмеження до UI (кейс з MUI).</p></div>
+    <div class="card"><h3>Складний B2B</h3><p class="muted">Логістика, правила консолідації вантажів, B2B-конфігуратор, дашборди. Флоу з HubSpot та Acumatica — це фактично service blueprint.</p></div>
+    <div class="card"><h3>Пріоритизація</h3><p class="muted">Effort-impact, блокери команди, оцінювання «непотрібних» ідей через повну вартість змін.</p></div>
+  </div>
+
+  <h2>Правила гри</h2>
+  <div class="card"><ul class="clean">
+    <li><b>Не наздоганяй пропущене.</b> Пропустила тиждень — просто продовжуй з поточної сесії. План без дедлайну.</li>
+    <li><b>Кожна сесія залишає артефакт:</b> документ, схему, нотатку, запис. Артефакти — це матеріал для портфоліо.</li>
+    <li><b>Майданчик для практики — петпроєкт.</b> Респонденти з опитування садівників — твоя перша вибірка для інтерв'ю й тестів.</li>
+    <li><b>AI — другий рецензент, а не перший виконавець.</b> Спершу роби сама, потім порівнюй з Claude. Так видно, чого ти ще не бачиш.</li>
+    <li><b>Прогрес зберігається в цьому браузері.</b> Щоб не загубити його, роби експорт (кнопки внизу сторінки).</li>
+  </ul></div>
+</section>
+
+<!-- ROUTE -->
+<section class="view" id="route">
+  <h1>Маршрут по тижнях</h1>
+  <p class="lead">Сесії розставлені з урахуванням залежностей: інтерв'ю йдуть перед CJM, прототип — перед тестуванням. Поточна сесія виділена рамкою.</p>
+  <div class="toolbar">
+    <select id="fRound"><option value="">Усі цикли</option><option value="1">Цикл 1 · Фундамент</option><option value="2">Цикл 2 · Практика</option><option value="3">Цикл 3 · Подача</option></select>
+    <select id="fMod"><option value="">Усі модулі</option></select>
+    <label class="muted"><input type="checkbox" id="fHide"> сховати виконані</label>
+    <button class="btn" id="goCurrent">До поточної сесії ↓</button>
+  </div>
+  <div id="routeList"></div>
+</section>
+
+<!-- MODULES -->
+<section class="view" id="modules">
+  <h1>Модулі</h1>
+  <p class="lead">Для кожної теми: чому вона в плані, теорія з джерелами, шаблони, флешкартки для самоперевірки й поле для нотаток.</p>
+  <div id="modList"></div>
+</section>
+
+<!-- TEMPLATES -->
+<section class="view" id="templates">
+  <h1>Шаблони для практики</h1>
+  <p class="lead">Документи-основи для вправ. Скопіюй у Notion, Google Docs, FigJam чи Obsidian або завантаж як .md.</p>
+  <div class="tpl">
+    <div class="tpl-list" id="tplList"></div>
+    <div>
+      <div class="toolbar" style="margin:0">
+        <h2 id="tplTitle" style="margin:0;flex:1"></h2>
+        <button class="btn" id="tplCopy">Копіювати</button>
+        <button class="btn primary" id="tplDl">Завантажити .md</button>
+      </div>
+      <p class="muted" id="tplDesc" style="margin:6px 0 0"></p>
+      <pre class="doc" id="tplBody"></pre>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEW -->
+<section class="view" id="review">
+  <h1>Повторення</h1>
+  <p class="lead">Інтервальне повторення: картки з позначкою «Ще раз» з'являються частіше. Достатньо 10 хвилин на початку кожної сесії.</p>
+  <div class="toolbar">
+    <select id="rMod"><option value="">Усі модулі</option></select>
+    <button class="btn" id="rReset">Скинути статистику карток</button>
+    <span class="muted" id="rStat"></span>
+  </div>
+  <div class="review">
+    <div class="fc" id="rCard"><div class="in"><div class="f" id="rFront"></div><div class="b" id="rBack"></div></div></div>
+    <p class="muted" style="margin:10px 0">Клацни картку, щоб побачити відповідь</p>
+    <div class="toolbar" style="justify-content:center">
+      <button class="btn" id="rAgain">↺ Ще раз</button>
+      <button class="btn primary" id="rKnow">✓ Знаю</button>
+    </div>
+  </div>
+  <h2>Квартальний чек-ап (раз на 3 місяці, одна сесія)</h2>
+  <div class="card"><ul class="clean" id="quarterly"></ul></div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="toolbar">
+    <button class="btn" id="exp">Експорт прогресу (.json)</button>
+    <label class="btn" style="cursor:pointer">Імпорт прогресу<input type="file" id="imp" accept="application/json" hidden></label>
+    <button class="btn" id="wipe">Очистити прогрес</button>
+  </div>
+  Прогрес, нотатки й статистика карток зберігаються локально в цьому браузері (localStorage). Експорт потрібен для перенесення на інший пристрій.
+</div></footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ======================= DATA ======================= */
+const MODULES = [
+ {id:"m1", n:1, title:"Дослідження з користувачами", sub:"Інтерв'ю, синтез, інсайти, JTBD", pr:"crit",
+  why:"Інтерв'ю з користувачами — «не проводила взагалі». Відповідь про обробку інформації вийшла загальною («сортую за value»). У цільовому департаменті близько 90% роботи — discovery.",
+  goals:["Скласти дослідницький план і гайд інтерв'ю без навідних питань","Провести щонайменше 5 інтерв'ю","Синтезувати: спостереження → інсайти → How Might We","Сформулювати JTBD / job stories"],
+  theory:[["NN/g — User Interviews 101","https://www.nngroup.com/articles/user-interviews/"],["NN/g — Affinity Diagramming","https://www.nngroup.com/articles/affinity-diagram/"],["GOV.UK Service Manual — User research","https://www.gov.uk/service-manual/user-research"]],
+  books:["Erika Hall — Just Enough Research","Rob Fitzpatrick — The Mom Test","Steve Portigal — Interviewing Users"],
+  tpl:["t-plan","t-guide","t-synth"],
+  cards:[
+   ["Чим інтерв'ю відрізняється від опитування?","Інтерв'ю — якісний метод: «чому» і «як», глибина, мала вибірка. Опитування — кількісний: «скільки» і «як часто», ширина, велика вибірка. Опитування добре валідує те, що ти знайшла в інтерв'ю."],
+   ["Що таке навідне питання? Наведи приклад і виправлення.","Питання, що підказує бажану відповідь. ✗ «Вам було б зручно мати календар посадок?» ✓ «Розкажіть, як ви плануєте, що робити в саду наступного тижня. Коли це було востаннє?»"],
+   ["Скільки інтерв'ю достатньо?","Для якісного дослідження в одному сегменті зазвичай 5–8 — до «насичення», коли нові інтерв'ю перестають давати нові патерни. Для кожного сегмента окремо."],
+   ["Спостереження vs інсайт","Спостереження — факт («4 з 6 ведуть таблицю в Google Sheets»). Інсайт — інтерпретація з «чому» і наслідком для дизайну («Люди тримають знання в таблицях, бо не довіряють узагальненим порадам для свого регіону → персоналізація за регіоном критична»)."],
+   ["Формат job story (JTBD)","Коли [ситуація], я хочу [мотивація], щоб [очікуваний результат]. Фокус на ситуації, а не на персоні."],
+   ["Принцип «The Mom Test»","Питай про минуле і конкретну поведінку, а не про думки та майбутнє. Не розповідай про свою ідею, поки не зрозумієш проблему."]]},
+ {id:"m2", n:2, title:"Юзабіліті-тестування та валідація", sub:"Модеровані та немодеровані тести, метрики, SUS", pr:"crit",
+  why:"Тести й фокус-групи — «ні, не було бюджету». Senior має вміти провести дешевий тест на 5 людях без бюджету.",
+  goals:["Скласти план тесту із задачами-сценаріями","Провести модерований тест на 5 учасниках (think-aloud)","Порахувати success rate і SUS","Пріоритизувати знахідки за severity та ітерувати прототип"],
+  theory:[["NN/g — Usability Testing 101","https://www.nngroup.com/articles/usability-testing-101/"],["NN/g — Why You Only Need to Test with 5 Users","https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/"],["NN/g — Thinking Aloud","https://www.nngroup.com/articles/thinking-aloud-the-1-usability-tool/"]],
+  books:["Steve Krug — Rocket Surgery Made Easy","Steve Krug — Don't Make Me Think"],
+  tpl:["t-test","t-findings"],
+  cards:[
+   ["Чому 5 користувачів?","Модель Нільсена–Ландауера: 5 учасників знаходять близько 85% проблем у межах одного сегмента. Краще кілька ітерацій по 5, ніж одна на 15."],
+   ["Як правильно сформулювати задачу для тесту?","Реалістичний сценарій із мотивацією, без підказок назвами кнопок. ✗ «Натисніть „Додати рослину“». ✓ «Ви щойно посадили помідори. Зробіть так, щоб додаток нагадав, коли їх підживити»."],
+   ["Модерований vs немодерований тест","Модерований: ведучий, можна уточнювати «чому», глибше, повільніше. Немодерований (Maze, Useberry): швидко, масштабовано, без уточнень. Добре для перевірки конкретних флоу та метрик."],
+   ["SUS: що це і яка середня оцінка?","System Usability Scale — 10 тверджень, шкала 1–5, підсумок 0–100. Середнє по індустрії близько 68. Вище 80 — добре."],
+   ["Ключові метрики юзабіліті","Task success rate, time on task, кількість помилок, SEQ (складність однієї задачі), SUS (загальне сприйняття)."]]},
+ {id:"m3", n:3, title:"Мапи досвіду та моделі користувачів", sub:"CJM, service blueprint, storyboard, персони", pr:"high",
+  why:"Service blueprint ти робила, але не впізнала назву. Сумнівалася щодо повного життєвого циклу («можливо, я плутаю»). Storyboard не робила. Персони не презентувала стейкхолдерам і не називала їх proto-personas.",
+  goals:["Чітко розрізняти user flow / CJM / experience map / service blueprint","Перемалювати власний B2B-кейс як service blueprint","Відрізняти proto-persona від research-based persona","Намалювати storyboard ключового сценарію"],
+  theory:[["NN/g — Journey Mapping 101","https://www.nngroup.com/articles/journey-mapping-101/"],["NN/g — Service Blueprints: Definition","https://www.nngroup.com/articles/service-blueprints-definition/"],["NN/g — UX Mapping Methods Compared","https://www.nngroup.com/articles/ux-mapping-cheat-sheet/"],["NN/g — Persona Types","https://www.nngroup.com/articles/persona-types/"],["NN/g — Storyboards Help Visualize UX Ideas","https://www.nngroup.com/articles/storyboards-visualize-ideas/"]],
+  books:["Jim Kalbach — Mapping Experiences","Andy Polaine et al. — Service Design: From Insight to Implementation"],
+  tpl:["t-cjm","t-blueprint","t-persona","t-story"],
+  cards:[
+   ["Шари service blueprint","Evidence (фізичні/цифрові докази) → Customer actions → лінія взаємодії → Frontstage → лінія видимості → Backstage → лінія внутрішньої взаємодії → Support processes (системи, CRM/ERP, інтеграції)."],
+   ["CJM vs service blueprint","CJM — досвід з боку клієнта (етапи, дії, думки, емоції, болі, можливості). Blueprint — як організація цей досвід забезпечує (frontstage, backstage, системи). Blueprint часто будують поверх CJM."],
+   ["Experience map vs CJM","Experience map — загальний людський досвід у домені, незалежно від продукту (наприклад, «як люди доглядають за садом»). CJM — досвід з конкретним продуктом чи компанією."],
+   ["Що таке proto-persona?","Персона на основі припущень команди та стейкхолдерів, без досліджень. Корисна для старту, але її треба явно так називати й пізніше валідувати інтерв'ю."],
+   ["Коли використовувати storyboard?","Щоб показати сценарій у контексті реального життя: ситуацію, тригер, емоцію, результат. Особливо для узгодження зі стейкхолдерами і для нових концепцій, де UI ще немає."],
+   ["Що таке «full lifecycle» досвіду?","Від усвідомлення потреби, пошуку та вибору → онбординг → регулярне використання → підтримка → продовження / відмова / рекомендація. Це охоплює CJM, а з боку організації — blueprint."]]},
+ {id:"m4", n:4, title:"Стейкхолдери та фасилітація", sub:"Stakeholder mapping, інтерв'ю, воркшопи, аргументація", pr:"high",
+  why:"Stakeholder mapping — «через дружні стосунки та PM». Стейкхолдер-інтерв'ю вели PM або BA. Double Diamond обрано, бо «можу закрити сама». Доступ до клієнта був лише через PM. Senior має сам вибудовувати доступ і вести командні сесії.",
+  goals:["Будувати power/interest-мапу і RACI","Самостійно провести стейкхолдер-інтерв'ю","Фасилітувати 60-хвилинний воркшоп","Мати аргументи, як отримати доступ до користувачів"],
+  theory:[["Design Council — The Double Diamond","https://www.designcouncil.org.uk/our-resources/the-double-diamond/"],["NN/g — UX Workshops","https://www.nngroup.com/articles/ux-workshops-vs-meetings/"]],
+  books:["Tom Greever — Articulating Design Decisions","Dave Gray et al. — Gamestorming","Jake Knapp — Sprint","Jeff Gothelf — Lean UX"],
+  tpl:["t-stake","t-workshop","t-access"],
+  cards:[
+   ["Квадранти power/interest grid","Висока влада + високий інтерес → тісна співпраця. Висока влада + низький інтерес → тримати задоволеними. Низька влада + високий інтерес → тримати в курсі. Низька влада + низький інтерес → моніторити."],
+   ["RACI","Responsible — виконує. Accountable — відповідає за результат (одна людина). Consulted — радяться до рішення. Informed — інформують після."],
+   ["4 фази Double Diamond","Discover (розширення: дослідження) → Define (звуження: проблема) → Develop (розширення: ідеї) → Deliver (звуження: тестування й запуск)."],
+   ["Lean UX у 3 тезах","Гіпотези замість вимог. Мінімальні експерименти й швидке навчання. Крос-функціональна команда разом формулює проблему й валідує рішення."],
+   ["Як захистити рішення без досліджень?","1) Прив'язати до бізнес-цілі чи KPI. 2) Послатися на стандарт або евристику. 3) Показати ризик альтернативи. 4) Запропонувати дешеву перевірку (5 користувачів, A/B, аналітика)."],
+   ["Як сказати «так, але…» стейкхолдеру?","Визнати ціль за ідеєю → показати повну вартість і залежності → запропонувати дешевший спосіб досягти тієї ж цілі або експеримент для перевірки."]]},
+ {id:"m5", n:5, title:"Інформаційна архітектура", sub:"Card sorting, tree testing, навігація", pr:"mid",
+  why:"Card sorting — «самостійно», а метод передбачає участь користувачів. Tree testing ти не згадала.",
+  goals:["Розрізняти open, closed і hybrid card sorting","Провести онлайн card sorting на 10–15 учасниках","Перевірити навігацію через tree testing","Перетворити результати на рішення"],
+  theory:[["NN/g — Card Sorting: Uncover Users' Mental Models","https://www.nngroup.com/articles/card-sorting-definition/"],["NN/g — Tree Testing","https://www.nngroup.com/articles/tree-testing/"]],
+  books:["Abby Covert — How to Make Sense of Any Mess","Donna Spencer — Card Sorting"],
+  tpl:["t-ia"],
+  cards:[
+   ["Open vs closed card sorting","Open: учасники самі групують і називають групи — для створення нової IA. Closed: категорії задані — для перевірки та наповнення існуючої. Hybrid: категорії задані, але можна створювати нові."],
+   ["Tree testing — що перевіряє?","Чи знаходять користувачі контент у текстовій ієрархії без візуального дизайну. Метрики: success, directness (без повернень назад), time."],
+   ["Порядок: card sorting чи tree testing?","Спершу card sorting (генеруємо структуру), потім tree testing (перевіряємо). Після правок — повторний tree test."],
+   ["Скільки учасників для card sorting?","Для кількісних висновків близько 15–20+ учасників на сегмент. Модерований якісний варіант — 5–8."]]},
+ {id:"m6", n:6, title:"Аудит: евристики та доступність", sub:"Severity rating, WCAG 2.2, backlog для розробки", pr:"high",
+  why:"Ти не відповіла, як доносиш знахідки розробнику і як їх пріоритизуєш. Акцент на тому, що accessibility перевіряє Claude, може виглядати як відсутність власної експертизи.",
+  goals:["Знати 10 евристик Нільсена напам'ять з B2B-прикладами","Оцінювати знахідки за шкалою severity 0–4","Вручну перевіряти ключові критерії WCAG (клавіатура, контраст, screen reader)","Оформлювати аудит як backlog з пріоритетами"],
+  theory:[["NN/g — 10 Usability Heuristics","https://www.nngroup.com/articles/ten-usability-heuristics/"],["NN/g — Severity Ratings for Usability Problems","https://www.nngroup.com/articles/how-to-rate-the-severity-of-usability-problems/"],["W3C — WCAG 2.2 Quick Reference","https://www.w3.org/WAI/WCAG22/quickref/"],["W3C — Easy Checks: a first review","https://www.w3.org/WAI/test-evaluate/preliminary/"]],
+  books:["Sarah Horton, Whitney Quesenbery — A Web for Everyone"],
+  tpl:["t-audit","t-wcag"],
+  cards:[
+   ["Шкала severity (Нільсен)","0 — не проблема. 1 — косметична. 2 — мінорна (низький пріоритет). 3 — серйозна (високий пріоритет). 4 — катастрофа (виправити до релізу). Severity = частота × вплив × повторюваність."],
+   ["POUR","Perceivable, Operable, Understandable, Robust — чотири принципи WCAG."],
+   ["Контраст за WCAG AA","Звичайний текст 4.5:1. Великий текст (від 24px, або від 18.66px жирний) 3:1. Не-текстові елементи UI та стани фокуса 3:1."],
+   ["Перелічи 10 евристик","Visibility of system status · Match with real world · User control & freedom · Consistency & standards · Error prevention · Recognition over recall · Flexibility & efficiency · Aesthetic & minimalist design · Help recognize, diagnose, recover from errors · Help & documentation."],
+   ["Як подати аудит розробнику?","Backlog: проблема → де (скрін, URL) → евристика чи критерій WCAG → severity → рекомендація → оцінка effort. Сортуємо за severity × effort (quick wins першими)."],
+   ["3 ручні перевірки доступності за 10 хвилин","1) Пройти флоу лише клавіатурою (Tab, Shift+Tab, Enter, Esc): чи видно фокус, чи логічний порядок. 2) Збільшити масштаб до 200%. 3) Прослухати сторінку screen reader'ом (NVDA чи VoiceOver): заголовки, лейбли, alt."]]},
+ {id:"m7", n:7, title:"Data visualization і дашборди", sub:"Принципи dataviz, Power BI, Excel-first користувачі", pr:"high",
+  why:"Power BI знаєш на базовому рівні. Потенційний проєкт — кастомні дашборди замість Power BI для клієнтів зі звичками «Excel-first».",
+  goals:["Розрізняти operational, analytical і strategic дашборди","Обирати тип графіка під питання","Розуміти можливості й обмеження Power BI (themes, visuals)","Проєктувати дашборд від рішень користувача, а не від даних"],
+  theory:[["Microsoft Learn — Power BI documentation","https://learn.microsoft.com/en-us/power-bi/"],["Microsoft Learn — Report themes in Power BI","https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes"],["NN/g — Dashboards: Making Charts and Graphs Easier to Understand","https://www.nngroup.com/articles/dashboards-preattentive/"]],
+  books:["Stephen Few — Information Dashboard Design","Cole Nussbaumer Knaflic — Storytelling with Data","Andy Kirk — Data Visualisation"],
+  tpl:["t-dash"],
+  cards:[
+   ["3 типи дашбордів","Operational — моніторинг «зараз», швидкі дії (статуси рейсів). Analytical — дослідження трендів і причин (фільтри, drill-down). Strategic — KPI для керівництва, мінімум деталей."],
+   ["Preattentive attributes","Колір, розмір, позиція, форма, орієнтація — мозок помічає їх до свідомої уваги. Колір використовуй для того, що важливо, а не для прикраси."],
+   ["Який графік для якого питання?","Порівняння — bar. Тренд у часі — line. Частина від цілого — stacked bar (pie лише для 2–3 частин). Розподіл — histogram або box plot. Зв'язок — scatter. Одне ключове число — KPI card з порівнянням."],
+   ["Що можна кастомізувати в Power BI без коду?","Теми (JSON: кольори, шрифти, стилі візуалів), layout, форматування стандартних візуалів, bookmarks. Глибока кастомізація вимагає custom visuals (розробка) — тож закладай патерни, які реалізовні стандартно."],
+   ["Як працювати з Excel-first користувачами?","Не ламати звичні патерни одразу: таблиця як базовий вигляд, + візуальні акценти (умовне форматування, sparklines), + поступово графіки там, де вони відповідають на конкретне питання."]]},
+ {id:"m8", n:8, title:"UX writing як система", sub:"Voice & tone, глосарій, content guidelines", pr:"mid",
+  why:"UX writing — «самостійно ні». На питання, як тримати консистентність між кількома продуктами, відповіді не було.",
+  goals:["Розрізняти voice і tone","Скласти глосарій термінів і правила мікрокопі","Вбудувати контент-правила в дизайн-систему","Провести аудит текстів продукту"],
+  theory:[["NN/g — The Four Dimensions of Tone of Voice","https://www.nngroup.com/articles/tone-of-voice-dimensions/"],["Mailchimp Content Style Guide","https://styleguide.mailchimp.com/"]],
+  books:["Torrey Podmajersky — Strategic Writing for UX","Kinneret Yifrah — Microcopy: The Complete Guide"],
+  tpl:["t-writing"],
+  cards:[
+   ["Voice vs tone","Voice — сталий характер бренду (хто ми). Tone — адаптація до ситуації (помилка, успіх, онбординг). Voice один, тонів багато."],
+   ["4 виміри tone of voice (NN/g)","Funny ↔ serious · Formal ↔ casual · Respectful ↔ irreverent · Enthusiastic ↔ matter-of-fact."],
+   ["Як забезпечити консистентність між продуктами?","Спільний глосарій (терміни, заборонені синоніми), content guidelines у дизайн-системі, тексти як частина компонентів, рев'ю текстів перед handoff."],
+   ["Формула повідомлення про помилку","Що сталося (людською мовою) + чому (якщо корисно) + що зробити зараз. Без звинувачень і технічних кодів на першому плані."],
+   ["Правило для кнопок","Дієслово + об'єкт («Зберегти зміни», «Додати рослину»), а не «ОК» чи «Так». Текст кнопки має бути зрозумілим без контексту діалогу."]]},
+ {id:"m9", n:9, title:"Senior-подача: кейси та відповіді", sub:"STAR, метрики, артикуляція рішень, AI-позиціонування", pr:"high",
+  why:"Відповіді довгі й наративні, багато відступів. Мало результатів у цифрах. Подекуди ти применшувала себе («можливо, я плутаю», «самостійно ні»). Два ключові кейси закінчились «на паузі».",
+  goals:["Банк з 10 STAR-історій під матрицю питань","Відповідь у межах 1,5–2 хвилин","Метрики (або план вимірювання) в кожному кейсі","Формула чесної відповіді «не робила, але…»"],
+  theory:[],
+  books:["Tom Greever — Articulating Design Decisions","Cindy Alvarez — Lean Customer Development"],
+  tpl:["t-star","t-gap","t-matrix"],
+  cards:[
+   ["STAR","Situation (контекст, 1–2 речення) → Task (твоя відповідальність) → Action (що зробила ТИ, конкретно) → Result (цифра чи наслідок + чого навчилась). Action ≈ 50% часу."],
+   ["Як відповісти, якщо не робила?","«Повноцінно — ні. Найближчий досвід — [X]. Якби робила зараз, діяла б так: [3 кроки за методом]. Уже практикую на [петпроєкт]». Ніколи не обриватися на «ні»."],
+   ["Як говорити про AI на співбесіді?","AI як прискорювач після власної експертизи: «Я роблю аудит за евристиками та WCAG вручну, а Claude використовую як другого рецензента — він знайшов X, чого не бачив технічний аудит». Не «Claude перевіряє за мене»."],
+   ["Як показати результат, якщо проєкт на паузі?","Результат — не лише запуск: валідована концепція, рішення клієнта на основі discovery (зекономлені гроші), налаштована аналітика, метрика-база, план вимірювання."],
+   ["Структура розповіді про себе (90 секунд)","Хто я зараз (роль + спеціалізація) → 2–3 найсильніші докази (B2B, аналітика, дизайн-системи) → що шукаю і чому ця роль. Історію про перехід з педагогіки — одним реченням як перевагу (фасилітація, навчання)."]]}
+];
+
+const SESSIONS = [
+ // ---- ROUND 1 ----
+ {r:1,m:"m1",t:"Дослідницький план",th:"Just Enough Research: розділи про цілі та питання дослідження. NN/g: User Interviews 101.",pr:"Заповни план дослідження для садового додатку: бізнес-ціль, research questions, гіпотези, хто респонденти.",out:"Дослідницький план v1",tp:["t-plan"]},
+ {r:1,m:"m1",t:"Гайд інтерв'ю + скринер",th:"The Mom Test (книга коротка, 2 сесії читання винось на вихідні, якщо захочеш).",pr:"Напиши гайд на 45 хв і скринер. Проведи пілот із другом, викресли навідні питання.",out:"Гайд інтерв'ю v1",tp:["t-guide"]},
+ {r:1,m:"m3",t:"Карта артефактів: flow / CJM / experience map / blueprint",th:"NN/g: UX Mapping Methods Compared, Service Blueprints: Definition.",pr:"Перемалюй анонімізований кейс з HubSpot та Acumatica як service blueprint з лініями взаємодії та видимості.",out:"Service blueprint власного кейсу",tp:["t-blueprint"]},
+ {r:1,m:"m3",t:"Персони: proto vs research-based, JTBD",th:"NN/g: Persona Types. Шаблон job stories.",pr:"Склади 2 proto-personas для садового додатку і 5 job stories. Познач, які припущення треба валідувати.",out:"Proto-personas + список припущень",tp:["t-persona"]},
+ {r:1,m:"m6",t:"10 евристик на B2B-прикладах",th:"NN/g: 10 Usability Heuristics, Severity Ratings.",pr:"Для кожної евристики знайди по одному прикладу порушення у B2B-продуктах, з якими працювала. Додай severity.",out:"Шпаргалка «евристика → мій приклад»",tp:["t-audit"]},
+ {r:1,m:"m6",t:"WCAG 2.2 базово + ручна перевірка",th:"WCAG 2.2 Quick Reference (фільтр: рівень AA), W3C Easy Checks.",pr:"Перевір 1 сторінку вручну: клавіатура, фокус, контраст, масштаб 200%, NVDA чи VoiceOver. Потім попроси Claude і порівняй, що знайшла ти, а що — він.",out:"Чекліст + порівняння «я vs AI»",tp:["t-wcag"]},
+ {r:1,m:"m4",t:"Stakeholder map + RACI",th:"Articulating Design Decisions (розділи про стейкхолдерів).",pr:"Побудуй power/interest grid і RACI для одного з минулих проєктів. Хто був пропущений?",out:"Мапа стейкхолдерів",tp:["t-stake"]},
+ {r:1,m:"m4",t:"Власний гайд стейкхолдер-інтерв'ю",th:"NN/g: Stakeholder Interviews. Design Council: Double Diamond. Lean UX (огляд).",pr:"Адаптуй шаблон гайду під B2B-клієнта. Сформулюй, чим Double Diamond і Lean UX доповнюють одне одного.",out:"Гайд стейкхолдер-інтерв'ю",tp:["t-stake"]},
+ {r:1,m:"m2",t:"Як влаштований юзабіліті-тест",th:"NN/g: Usability Testing 101, Thinking Aloud. Rocket Surgery Made Easy (огляд).",pr:"Склади план тесту з 4–5 задачами для онбордингу садового додатку.",out:"План тесту v1",tp:["t-test"]},
+ {r:1,m:"m5",t:"Card sorting і tree testing: теорія та план",th:"NN/g: Card Sorting, Tree Testing.",pr:"Випиши 30–40 карток контенту садового додатку і план open card sorting.",out:"Список карток + план",tp:["t-ia"]},
+ {r:1,m:"m7",t:"Принципи dataviz і типи дашбордів",th:"Storytelling with Data (розділи 1–4) або Information Dashboard Design (огляд).",pr:"Розбери один свій дашборд (рейси чи меблі): які рішення він підтримує, чи правильно обрані графіки.",out:"Критика власного дашборду",tp:["t-dash"]},
+ {r:1,m:"m7",t:"Power BI: можливості та обмеження",th:"Microsoft Learn: Power BI docs, Report themes.",pr:"Пройди базовий модуль, збери простий звіт на відкритих даних, зміни тему через JSON. Запиши список «що легко / що боляче кастомізувати».",out:"Нотатка «Power BI: межі кастомізації»",tp:[]},
+ {r:1,m:"m8",t:"Voice & tone",th:"NN/g: Four Dimensions of Tone of Voice. Mailchimp Content Style Guide (огляд).",pr:"Визнач voice садового додатку за 4 вимірами і тон для 4 ситуацій: онбординг, успіх, помилка, порожній стан.",out:"Voice & tone картка",tp:["t-writing"]},
+ {r:1,m:"m8",t:"Глосарій і правила мікрокопі",th:"Strategic Writing for UX (розділи про шаблони текстів).",pr:"Склади глосарій із 15 термінів і правила для кнопок, помилок, підтверджень.",out:"Глосарій v1",tp:["t-writing"]},
+ {r:1,m:"m9",t:"Банк STAR-історій (частина 1)",th:"Шаблон STAR і формула «не робила, але…».",pr:"Напиши 5 STAR-історій: аналітика (DDPD), MUI-обмеження, логістичний discovery, 19 Tab-кліків, захист рішення.",out:"5 STAR-карток",tp:["t-star","t-gap"]},
+ {r:1,m:"m9",t:"Розповідь про себе за 90 секунд",th:"Структура «хто я → 3 докази → чого шукаю».",pr:"Напиши й начитай на диктофон. Ціль — до 90 секунд.",out:"Pitch + запис",tp:["t-matrix"]},
+ // ---- ROUND 2 ----
+ {r:2,m:"m1",t:"Рекрутинг і перші 2 інтерв'ю",th:"Повтори картки модуля 1.",pr:"Напиши респондентам з опитування, які залишили контакти. Проведи 2 інтерв'ю із записом (Fireflies).",out:"2 записи + нотатки",tp:["t-guide"]},
+ {r:2,m:"m1",t:"Ще 3 інтерв'ю",th:"Після кожного інтерв'ю — 10 хв дебрифу: що здивувало, що змінити в гайді.",pr:"Проведи 3 інтерв'ю. Онови гайд після першого.",out:"5 інтерв'ю загалом",tp:["t-guide"]},
+ {r:2,m:"m1",t:"Синтез: affinity → інсайти → HMW",th:"NN/g: Affinity Diagramming.",pr:"У FigJam: стікери-спостереження → кластери → 5–7 інсайтів → HMW → JTBD. Лише потім попроси AI знайти пропущені патерни.",out:"Дошка синтезу + 1-сторінкові інсайти",tp:["t-synth"]},
+ {r:2,m:"m3",t:"CJM на основі інтерв'ю",th:"NN/g: Journey Mapping 101.",pr:"Побудуй CJM «планування сезону» з емоційною кривою та можливостями. Онови персони: proto → research-based.",out:"CJM + оновлені персони",tp:["t-cjm","t-persona"]},
+ {r:2,m:"m3",t:"Storyboard ключового сценарію",th:"NN/g: Storyboards. Малювати можна схематично.",pr:"6 кадрів: «помітила хворобу на помідорах → фото → порада → дія».",out:"Storyboard",tp:["t-story"]},
+ {r:2,m:"m5",t:"Онлайн card sorting",th:"Інструменти: Optimal Workshop (безкоштовний тариф), Maze або Useberry.",pr:"Запусти open card sorting на 10–15 учасниках з Facebook-груп.",out:"Сирі результати",tp:["t-ia"]},
+ {r:2,m:"m5",t:"Аналіз і tree testing",th:"Матриця схожості та дендрограма.",pr:"Побудуй навігацію за результатами й запусти tree test на 3–4 задачі.",out:"Нова IA + метрики tree test",tp:["t-ia"]},
+ {r:2,m:"m2",t:"Модерований тест на 5 учасниках",th:"Повтори картки модуля 2.",pr:"Протестуй mid-fi прототип онбордингу в Figma (think-aloud, 30 хв на людину). Можна розбити на 2 тижні.",out:"5 сесій + записи",tp:["t-test"]},
+ {r:2,m:"m2",t:"Аналіз тесту та ітерація",th:"Rainbow spreadsheet, severity.",pr:"Заповни журнал знахідок, порахуй success rate і SUS, внеси правки в прототип.",out:"Звіт тесту + прототип v2",tp:["t-findings"]},
+ {r:2,m:"m6",t:"Аудит реального B2B SaaS",th:"Повтори картки модуля 6.",pr:"Обери відкритий B2B-продукт із демо. Евристики + WCAG вручну → severity.",out:"Журнал аудиту",tp:["t-audit","t-wcag"]},
+ {r:2,m:"m6",t:"Аудит → backlog для розробки",th:"Severity × effort (quick wins).",pr:"Перетвори знахідки на 10 тікетів у форматі для Jira, відсортуй.",out:"Backlog аудиту",tp:["t-audit"]},
+ {r:2,m:"m4",t:"Стейкхолдер-інтерв'ю самостійно",th:"Повтори свій гайд.",pr:"Проведи одне інтерв'ю сама: робочий проєкт, фриланс-клієнт або адмін садівничої спільноти як «бізнес-стейкхолдер».",out:"Нотатки + висновки",tp:["t-stake"]},
+ {r:2,m:"m4",t:"Фасилітація воркшопу",th:"Gamestorming: обери 2 техніки (наприклад, HMW + dot voting).",pr:"Проведи 60-хвилинний воркшоп з 3–5 людьми за інсайтами з модуля 1.",out:"Агенда + результати + ретро",tp:["t-workshop"]},
+ {r:2,m:"m7",t:"Бриф і редизайн дашборду",th:"Повтори картки модуля 7.",pr:"Заповни бриф для дашборду рейсів і зроби редизайн за принципами dataviz.",out:"Бриф + редизайн",tp:["t-dash"]},
+ {r:2,m:"m7",t:"Версія «реалізовно в Power BI»",th:"Report themes JSON.",pr:"Адаптуй редизайн під стандартні візуали Power BI. Збери тему JSON у кольорах своєї дизайн-системи.",out:"Тема JSON + порівняння двох версій",tp:[]},
+ {r:2,m:"m8",t:"Content guidelines у дизайн-системі",th:"Як Material / Polaris документують контент.",pr:"Додай у Figma-компоненти садового додатку правила текстів і приклади do/don't.",out:"Контент-розділ DS",tp:["t-writing"]},
+ {r:2,m:"m8",t:"Аудит текстів продукту",th:"Повтори картки модуля 8.",pr:"Проаналізуй тексти одного продукту за власним guideline. 10 правок «було → стало».",out:"Аудит текстів",tp:["t-writing"]},
+ {r:2,m:"m9",t:"Метрики в кейсах",th:"Як показати результат без запуску.",pr:"Додай у 3 кейси метрики або план вимірювання (DDPD, логістика, меблі).",out:"3 оновлені кейси",tp:["t-star"]},
+ {r:2,m:"m9",t:"Відео-тренування відповідей",th:"Матриця питань Senior.",pr:"Запиши себе на відео: 5 питань з матриці. Переглянь: тривалість, слова-паразити, чи є результат.",out:"Записи + нотатки покращень",tp:["t-matrix","t-gap"]},
+ // ---- ROUND 3 ----
+ {r:3,m:"m1",t:"Звіт дослідження + презентація",th:"Як подавати інсайти стейкхолдерам.",pr:"Звіт на 1 сторінку + 10 хв презентації (запис). Це основа нового кейсу.",out:"Research report",tp:["t-synth"]},
+ {r:3,m:"m3",t:"Презентувати персони та CJM",th:"Articulating Design Decisions.",pr:"Презентуй артефакти «стейкхолдеру» (колега чи друг), збери 3 питання, на які не змогла відповісти.",out:"Фідбек + доопрацювання",tp:["t-cjm"]},
+ {r:3,m:"m2",t:"Немодерований тест і кейс «до/після»",th:"Maze або Useberry.",pr:"Запусти немодерований тест прототипу v2. Порівняй метрики з v1.",out:"Кейс «до/після» з цифрами",tp:["t-findings"]},
+ {r:3,m:"m5",t:"IA-кейс",th:"—",pr:"Оформи card sorting і tree testing як розділ кейсу: проблема → метод → рішення → метрики.",out:"Розділ портфоліо",tp:["t-ia"]},
+ {r:3,m:"m6",t:"Презентація аудиту",th:"—",pr:"10 хв: топ-5 проблем, severity, quick wins. Тренуй відповідь на «як пріоритизуєш».",out:"Слайди аудиту",tp:["t-audit"]},
+ {r:3,m:"m4",t:"Скрипт «як отримати доступ до користувачів»",th:"Cost of not researching.",pr:"Напиши аргументи для PM і клієнта, а також мінімальний дослідницький план на 1 тиждень і 0 бюджету.",out:"Скрипт аргументації",tp:["t-access"]},
+ {r:3,m:"m7",t:"Кейс: дашборди для Excel-first користувачів",th:"—",pr:"Опиши підхід до поступової міграції патернів (таблиця → акценти → графіки).",out:"Міні-кейс",tp:["t-dash"]},
+ {r:3,m:"m8",t:"UX writing у handoff",th:"Storybook docs / Figma descriptions.",pr:"Додай контент-правила в документацію компонентів (зв'язок з інтересом до Storybook).",out:"Оновлена документація DS",tp:["t-writing"]},
+ {r:3,m:"m9",t:"Mock-інтерв'ю",th:"Повтори всі картки.",pr:"Пройди mock-співбесіду з колегою або з Claude за матрицею. Повторюй щокварталу.",out:"Оцінка за матрицею + наступні фокуси",tp:["t-matrix"]}
+];
+
+const ROUND_ORDER = {1:["m1","m3","m6","m4","m2","m5","m7","m8","m9"],2:["m1","m3","m5","m2","m6","m4","m7","m8","m9"],3:["m1","m3","m2","m5","m6","m4","m7","m8","m9"]};
+
+const TEMPLATES = [
+ {id:"t-plan",title:"Дослідницький план",mod:"m1",desc:"Перший документ будь-якого дослідження. Фіксує, навіщо ми досліджуємо і що вважатимемо успіхом.",body:
+`# Дослідницький план — [назва продукту]
+
+## 1. Контекст
+- Продукт / фіча:
+- Що ми вже знаємо (дані, аналітика, опитування):
+- Що запустило дослідження:
+
+## 2. Бізнес-ціль
+- Яке рішення ухвалимо за результатами?
+- Яка метрика / KPI пов'язана?
+
+## 3. Дослідницькі питання (3–5)
+> Не плутати з питаннями для респондента! Це те, що МИ хочемо зрозуміти.
+1. Як [сегмент] зараз [робить задачу]?
+2. Що найбільше заважає / дратує в цьому процесі?
+3. Які інструменти й обхідні шляхи використовують?
+4. ...
+
+## 4. Гіпотези / припущення (для перевірки)
+| # | Припущення | Ризик, якщо хибне (H/M/L) | Як перевіримо |
+|---|------------|---------------------------|----------------|
+| 1 |            |                           |                |
+
+## 5. Метод
+- Метод: [інтерв'ю / тест / опитування / card sorting]
+- Чому саме цей метод:
+- Формат: онлайн / офлайн, тривалість:
+
+## 6. Учасники
+- Сегменти:
+- Кількість на сегмент: (інтерв'ю 5–8)
+- Критерії включення / виключення → див. скринер
+- Канали рекрутингу:
+- Винагорода:
+
+## 7. Логістика
+- Інструменти (Zoom/Meet, запис, транскрипція):
+- Хто веде / хто нотує:
+- Згода на запис: так / ні
+
+## 8. Таймлайн
+| Етап | Дата |
+|------|------|
+| Рекрутинг | |
+| Інтерв'ю | |
+| Синтез | |
+| Презентація | |
+
+## 9. Результат (deliverables)
+- [ ] Інсайти (1 сторінка)
+- [ ] Оновлені персони / JTBD
+- [ ] CJM
+- [ ] Рекомендації та наступні кроки
+`},
+ {id:"t-guide",title:"Гайд інтерв'ю + скринер",mod:"m1",desc:"Напівструктурований гайд на 45 хв. Питання — про минулу поведінку, без навідних формулювань.",body:
+`# Гайд інтерв'ю — [тема]   (≈45 хв)
+
+## Скринер (до інтерв'ю)
+1. Як часто ви [займаєтесь доменною діяльністю]? (щотижня / щомісяця / рідше → виключити)
+2. Як давно? (<1 року / 1–3 / 3+)  — потрібен мікс
+3. Які інструменти використовуєте для [задачі]? (відкрите)
+4. Регіон / контекст:
+5. Готові до 45-хв відеодзвінка із записом?
+
+---
+
+## 0. Інтро (3 хв)
+- Подяка, хто я, мета: «Хочу зрозуміти ваш досвід, а не перевірити вас. Тут немає правильних відповідей».
+- Згода на запис. Можна зупинитися будь-коли.
+
+## 1. Розігрів і контекст (5 хв)
+- Розкажіть трохи про себе і як [доменна діяльність] з'явилася у вашому житті?
+
+## 2. Поточна поведінка (15 хв)  ← ядро
+- Розкажіть про ОСТАННІЙ раз, коли ви [задача]. Що було спершу? Далі?
+- Що ви використовували? Чому саме це?
+- Що було найскладнішим? Що ви зробили, щоб це обійти?
+- Скільки часу це забрало?
+
+## 3. Болі й обхідні шляхи (10 хв)
+- Що вас найбільше дратує в цьому процесі?
+- Чи було, що щось пішло не так? Розкажіть детальніше.
+- Чи пробували інші способи / додатки? Чому залишили?
+
+## 4. Цілі та мотивація (7 хв)
+- Що для вас означає «вдалий сезон / результат»?
+- Якби можна було змінити одну річ у процесі — що б це було?  (наприкінці, щоб не підказувати)
+
+## 5. Завершення (5 хв)
+- Чи є щось, про що я не спитала, а варто було?
+- Чи можна звернутися ще раз (тест прототипу)?
+
+---
+### Пам'ятка ведучому
+- Уточнення: «Чому?», «Розкажіть більше», «Можете показати?», «Що ви мали на увазі під...?»
+- Мовчання 3–5 секунд — нормально, людина додасть важливе.
+- ✗ «Чи хотіли б ви...?»  ✗ «Чи було б зручно...?»  ✗ питання з двома частинами
+- Нотуй ЦИТАТИ дослівно, а не свої інтерпретації.
+`},
+ {id:"t-synth",title:"Синтез: спостереження → інсайти → HMW",mod:"m1",desc:"Процес affinity mapping і формат одного інсайту. Повний цикл від сирих нотаток до рішень.",body:
+`# Синтез дослідження
+
+## Крок 1. Розпакування (по кожному інтерв'ю)
+Один стікер = одне спостереження / цитата + код респондента (R1..R5)
+- Кольори: 🟨 поведінка  🟥 біль  🟩 мотивація/ціль  🟦 інструмент/обхідний шлях
+
+## Крок 2. Affinity mapping
+- Групуй знизу вгору (не створюй категорії заздалегідь)
+- Назва кластера = речення від імені користувача: «Я не довіряю загальним порадам»
+- Кластер з 1 респондента — сигнал, з 3+ — патерн
+
+## Крок 3. Інсайти
+Формат:
+> **Інсайт:** [Хто] [робить / відчуває що], **тому що** [глибинна причина]. **Отже**, [наслідок для дизайну].
+> **Докази:** R1, R3, R4 · цитата: «...»
+> **Впевненість:** висока / середня / низька
+
+| # | Інсайт | Докази (R#) | Впевненість | Наслідок для дизайну |
+|---|--------|-------------|-------------|----------------------|
+| 1 | | | | |
+
+## Крок 4. How Might We
+Інсайт → «Як ми можемо [допомогти користувачу досягти X] з урахуванням [обмеження Y]?»
+- Не надто широко («як зробити садівництво кращим») і не надто вузько (вже готове рішення)
+
+## Крок 5. Job stories (JTBD)
+Коли [ситуація], я хочу [мотивація], щоб [результат].
+1.
+2.
+
+## Крок 6. Перевірка з AI (після власного синтезу!)
+Промпт: «Ось транскрипти та мої інсайти. Які патерни я могла пропустити? Які мої інсайти слабко підкріплені доказами?»
+`},
+ {id:"t-test",title:"План і скрипт юзабіліті-тесту + SUS",mod:"m2",desc:"Модерований think-aloud тест на 30 хв, задачі-сценарії та опитувальник SUS.",body:
+`# Юзабіліті-тест — [продукт / прототип]
+
+## План
+- Ціль тесту (що хочемо дізнатися):
+- Що тестуємо (посилання на прототип, версія):
+- Учасники: 5 × [сегмент]
+- Формат: модерований, віддалено, think-aloud, 30 хв
+- Метрики: success rate, помилки, SEQ на задачу, SUS загалом
+
+## Скрипт
+### Інтро (3 хв)
+«Ми тестуємо прототип, а не вас. Будь ласка, думайте вголос — кажіть, що бачите, що очікуєте, що вас дивує. Я не зможу допомагати — мені важливо побачити, як це працює без підказок».
+
+### Задачі (≈20 хв)
+| # | Сценарій (без назв кнопок!) | Критерій успіху | Success (Y/П/N) | SEQ 1–7 | Нотатки |
+|---|------------------------------|-----------------|-----------------|---------|---------|
+| 1 | Ви щойно завантажили додаток і хочете, щоб він підказував вам роботи саме для вашого регіону... | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+| 4 | | | | | |
+П = частково / з допомогою
+
+SEQ після кожної задачі: «Наскільки легко чи складно було виконати це завдання?» (1 — дуже складно … 7 — дуже легко)
+
+### Підсумкові питання (5 хв)
+- Що було найзрозумілішим? Найбільш заплутаним?
+- Якби ви описали цей додаток другу, що б сказали?
+
+## SUS (System Usability Scale)
+Оцінка 1 (зовсім не згодна) — 5 (повністю згодна):
+1. I think that I would like to use this system frequently.
+2. I found the system unnecessarily complex.
+3. I thought the system was easy to use.
+4. I think that I would need the support of a technical person to be able to use this system.
+5. I found the various functions in this system were well integrated.
+6. I thought there was too much inconsistency in this system.
+7. I would imagine that most people would learn to use this system very quickly.
+8. I found the system very cumbersome to use.
+9. I felt very confident using the system.
+10. I needed to learn a lot of things before I could get going with this system.
+
+Підрахунок: непарні (оцінка − 1), парні (5 − оцінка); сума × 2.5 = 0–100. Середнє ≈ 68.
+(SUS — John Brooke, 1986; для українських учасників дай переклад поруч)
+`},
+ {id:"t-findings",title:"Журнал знахідок тесту (rainbow sheet)",mod:"m2",desc:"Таблиця, де видно, яка проблема в скількох учасників траплялась, і її severity.",body:
+`# Журнал знахідок — [тест, дата]
+
+| # | Проблема / спостереження | Задача | P1 | P2 | P3 | P4 | P5 | Разом | Severity 0–4 | Рекомендація | Effort S/M/L |
+|---|--------------------------|--------|----|----|----|----|----|-------|--------------|--------------|--------------|
+| 1 | | | ✔ | | ✔ | ✔ | | 3/5 | 3 | | |
+| 2 | | | | | | | | | | | |
+
+## Метрики
+| Задача | Success rate | Сер. SEQ | Типова помилка |
+|--------|--------------|----------|----------------|
+| 1 | /5 | | |
+
+SUS середній: ___
+
+## Топ-3 проблеми для наступної ітерації
+1.
+2.
+3.
+
+## Що спрацювало добре (не ламати!)
+-
+`},
+ {id:"t-cjm",title:"Customer Journey Map",mod:"m3",desc:"Рядки CJM. Будуй у FigJam / Miro як таблицю: етапи по горизонталі, шари по вертикалі.",body:
+`# CJM — [персона] · [сценарій]
+Обсяг: від [тригер] до [результат]
+Основа: [інтерв'ю R1–R5 / припущення — позначити!]
+
+| Шар \\ Етап | Усвідомлення | Пошук / вибір | Онбординг | Регулярне використання | Проблема / підтримка | Повернення / рекомендація |
+|------------|--------------|---------------|-----------|------------------------|----------------------|---------------------------|
+| Ціль користувача | | | | | | |
+| Дії | | | | | | |
+| Точки контакту | | | | | | |
+| Думки (цитати) | | | | | | |
+| Емоції (😀/😐/😞) | | | | | | |
+| Болі | | | | | | |
+| Можливості | | | | | | |
+| Метрика етапу | | | | | | |
+
+## Висновки
+- Найнижча точка емоційної кривої:
+- Топ-3 можливості:
+- Що треба дослідити додатково:
+`},
+ {id:"t-blueprint",title:"Service blueprint",mod:"m3",desc:"Канва для складних B2B-процесів з бекендом та інтеграціями (як твій кейс з HubSpot та Acumatica).",body:
+`# Service Blueprint — [сервіс / сценарій]
+
+| Шар \\ Крок | 1 | 2 | 3 | 4 | 5 |
+|------------|---|---|---|---|---|
+| **Evidence** (що бачить / отримує: email, PDF, екран) | | | | | |
+| **Customer actions** | | | | | |
+| — — — лінія взаємодії — — — | | | | | |
+| **Frontstage** (UI, менеджер, чат) | | | | | |
+| — — — лінія видимості — — — | | | | | |
+| **Backstage** (дії співробітників, невидимі клієнту) | | | | | |
+| — — — лінія внутрішньої взаємодії — — — | | | | | |
+| **Support processes** (системи: CRM / ERP / API, напр. HubSpot, Acumatica) | | | | | |
+| Час / SLA | | | | | |
+| Fail points ⚠ | | | | | |
+
+## Аналіз
+- Fail points і їх вплив:
+- Ручні кроки, які можна автоматизувати:
+- Залежності від інтеграцій:
+- Що це означає для UI:
+`},
+ {id:"t-persona",title:"Persona (proto / research-based) + JTBD",mod:"m3",desc:"Одна канва для обох типів. Головне — чесно позначати, на чому вона базується.",body:
+`# Persona — [ім'я-архетип]
+Тип: ☐ proto-persona (припущення)  ☐ research-based (інтерв'ю: R__)
+
+## Хто це
+- Роль / контекст:
+- Досвід у домені: новачок / середній / експерт
+- Цифровий досвід:
+
+## Цілі
+1.
+2.
+
+## Болі / фрустрації
+1.
+2.
+
+## Поточна поведінка та інструменти
+-
+
+## Цитата (з інтерв'ю, якщо research-based)
+> «...»
+
+## Job stories
+- Коли ..., я хочу ..., щоб ...
+- Коли ..., я хочу ..., щоб ...
+
+## Що це означає для дизайну
+-
+
+## Припущення для валідації (для proto)
+| Припущення | Як перевірити | Статус |
+|------------|---------------|--------|
+| | | ☐ |
+`},
+ {id:"t-story",title:"Storyboard (6 кадрів)",mod:"m3",desc:"Сценарій у реальному контексті. Малюй схематично: людина-паличка + підпис.",body:
+`# Storyboard — [сценарій]
+Персона: ______   Мета: показати [ситуацію / цінність / нову концепцію]
+
+| Кадр | Що відбувається (сцена) | Думка / емоція | Підпис |
+|------|--------------------------|----------------|--------|
+| 1. Контекст | Де і коли? | | |
+| 2. Тригер | Що сталося? | | |
+| 3. Проблема | Що заважає зараз? | | |
+| 4. Взаємодія з рішенням | Що робить у продукті? | | |
+| 5. Результат | Що змінилось? | | |
+| 6. Емоція / наслідок | Як почувається, що далі? | | |
+
+Чекліст: ☐ видно реальний контекст  ☐ є емоція  ☐ UI мінімально, фокус на історії  ☐ зрозуміло без пояснень
+`},
+ {id:"t-stake",title:"Stakeholder map + RACI + гайд інтерв'ю",mod:"m4",desc:"Три інструменти, щоб самій розібратися «хто є хто» і що їм важливо.",body:
+`# Стейкхолдери — [проєкт]
+
+## 1. Список
+| Ім'я / роль | Що для них успіх | Страхи / ризики | Вплив (H/M/L) | Інтерес (H/M/L) | Як комунікуємо |
+|-------------|------------------|-----------------|---------------|-----------------|----------------|
+| | | | | | |
+
+## 2. Power / interest grid
+- Тісна співпраця (H влада, H інтерес):
+- Тримати задоволеними (H влада, L інтерес):
+- Тримати в курсі (L влада, H інтерес):
+- Моніторити (L / L):
+
+## 3. RACI по ключових рішеннях
+| Рішення / артефакт | R | A | C | I |
+|--------------------|---|---|---|---|
+| Затвердження дизайну | | | | |
+| Доступ до користувачів | | | | |
+| Пріоритети беклогу | | | | |
+
+## 4. Гайд стейкхолдер-інтерв'ю (30–45 хв)
+**Роль і цілі**
+- Яка ваша роль у проєкті? За що вас оцінюють?
+- Як виглядає успіх через 6–12 місяців? Яка метрика?
+**Користувачі**
+- Хто основні користувачі? Що ви про них знаєте і звідки?
+- Що вони скаржаться найчастіше?
+**Бізнес і обмеження**
+- Які обмеження: бюджет, терміни, технології, юридичні?
+- Хто ще впливає на рішення?
+**Конкуренти та референси**
+- На кого рівняєтесь? Що категорично НЕ хочете?
+- Які рішення з інших доменів вам подобаються?
+**Ризики**
+- Що може зробити цей проєкт провальним?
+- Чи пробували вже щось подібне? Що сталося?
+**Наступні кроки**
+- Чи можемо поговорити з кількома користувачами? Через кого?
+`},
+ {id:"t-workshop",title:"Агенда воркшопу (60 хв)",mod:"m4",desc:"Воркшоп «від інсайтів до ідей». Підходить для команди, клієнта чи друзів-тестувальників.",body:
+`# Воркшоп: від інсайтів до ідей — 60 хв
+Учасники: 3–6 · Інструмент: FigJam / Miro · Фасилітатор: я
+
+## Підготовка
+- [ ] Дошка з інсайтами та HMW
+- [ ] Таймер, правила, ціль на першому фреймі
+- [ ] Хто ухвалює фінальне рішення (decider)
+
+## Агенда
+| Час | Блок | Техніка | Результат |
+|-----|------|---------|-----------|
+| 0–5 | Ціль і правила | — | Спільне розуміння |
+| 5–15 | Огляд інсайтів | Презентація 5 хв + питання | Контекст |
+| 15–20 | Вибір HMW | Dot voting (3 голоси) | 2–3 HMW |
+| 20–35 | Генерація ідей | Crazy 8s / silent brainstorm | 20+ ідей |
+| 35–45 | Обговорення | Кожен — 1 хв на свої ідеї | Розуміння |
+| 45–52 | Пріоритизація | Impact / effort matrix | Топ-3 ідеї |
+| 52–60 | Наступні кроки | Хто / що / коли | Action items |
+
+## Правила
+- Спершу тиша, потім обговорення (щоб не домінували найгучніші)
+- Кількість > якість на етапі ідей
+- Критикуємо ідеї, а не людей
+
+## Після воркшопу
+- [ ] Самарі за 24 год
+- [ ] Ретро для себе: що спрацювало у фасилітації, що змінити
+`},
+ {id:"t-access",title:"Скрипт: як отримати доступ до користувачів",mod:"m4",desc:"Аргументи для PM / клієнта і мінімальний план дослідження з нульовим бюджетом.",body:
+`# Як отримати доступ до користувачів
+
+## Аргументи (обери 2–3 під стейкхолдера)
+- **Ризик:** «Зараз ми будуємо на припущеннях X і Y. Якщо хоча б одне хибне — переробка коштуватиме ~N тижнів розробки».
+- **Мінімальний обсяг:** «Мені потрібно 5 розмов по 30 хв. Це 2,5 години чужого часу і тиждень мого».
+- **Бізнес-мова:** «Це знизить ризик, що [KPI] не зросте після релізу».
+- **Безпечний формат:** «Я можу провести інтерв'ю разом з вами / вашим акаунт-менеджером. Ви контролюєте, кого запрошуємо».
+- **Альтернатива:** «Якщо користувачі недоступні — дайте доступ до support-тікетів, записів дзвінків sales чи аналітики».
+
+## Мінімальний план (1 тиждень, 0 бюджету)
+| День | Дія |
+|------|-----|
+| Пн | 3 дослідницькі питання + гайд (шаблон) |
+| Вт | Рекрутинг через клієнта / support / CSM |
+| Ср–Чт | 5 інтерв'ю по 30 хв |
+| Пт | Синтез + 1 сторінка інсайтів + показ команді |
+
+## Якщо відповідь «ні»
+- Зафіксувати припущення письмово (proto-personas, список ризиків)
+- Запропонувати перевірку після релізу: аналітика + 5 тестів
+- Повернутися з даними, щойно з'являться перші сигнали
+`},
+ {id:"t-ia",title:"Card sorting / tree testing план",mod:"m5",desc:"Від списку контенту до перевіреної навігації.",body:
+`# IA-дослідження — [продукт]
+
+## Card sorting
+- Тип: ☐ open  ☐ closed  ☐ hybrid
+- Інструмент: Optimal Workshop / Maze / FigJam (модерований)
+- Учасники: 15+ (онлайн) або 5–8 (модерований)
+- Картки (30–60): назви зрозумілою мовою, без жаргону
+| # | Картка | Примітка |
+|---|--------|----------|
+| 1 | | |
+- Інструкція учасникам: «Згрупуйте картки так, як вам логічно, і назвіть групи».
+
+## Аналіз
+- Матриця схожості: які пари картки потрапляють разом найчастіше (≥60%)
+- Дендрограма: природні кластери
+- Назви груп учасників → мова для навігації
+- Картки-«сироти» (без згоди) → потребують кращої назви або кількох шляхів
+
+## Tree testing
+- Дерево навігації (текстом, 2–3 рівні):
+- Задачі (4–8): «Де б ви шукали, як захистити помідори від фітофтори?»
+| Задача | Правильна відповідь | Success % | Directness % | Час |
+|--------|---------------------|-----------|--------------|-----|
+| | | | | |
+
+## Рішення
+- Що змінюємо в IA:
+- Що перевіряємо повторно:
+`},
+ {id:"t-audit",title:"Журнал евристичного аудиту",mod:"m6",desc:"Знахідка → евристика → severity → рекомендація → effort. Одразу готово до backlog розробки.",body:
+`# Евристичний аудит — [продукт], [дата]
+Обсяг: [флоу / сторінки]   Аудитор(и): [я + бажано ще 1–2]
+Шкала severity: 0 не проблема · 1 косметика · 2 мінорна · 3 серйозна · 4 катастрофа
+
+| # | Де (екран / URL) | Проблема | Евристика / WCAG | Частота | Вплив | Severity | Рекомендація | Effort S/M/L | Скрін |
+|---|------------------|----------|------------------|---------|-------|----------|--------------|--------------|-------|
+| 1 | | | H1 Visibility of system status | | | | | | |
+| 2 | | | | | | | | | |
+
+## 10 евристик (для колонки)
+H1 Visibility of system status · H2 Match between system and real world · H3 User control & freedom · H4 Consistency & standards · H5 Error prevention · H6 Recognition rather than recall · H7 Flexibility & efficiency of use · H8 Aesthetic & minimalist design · H9 Help users recognize, diagnose, recover from errors · H10 Help & documentation
+
+## Пріоритизація
+- 🔥 Quick wins: severity 3–4 + effort S
+- 📌 Plan: severity 3–4 + effort M/L
+- 🧹 Backlog: severity 1–2
+
+## Формат тікета для розробника
+**[Severity 3] Форма замовлення не показує, яке поле з помилкою**
+- Де: /checkout, крок 2
+- Очікування vs реальність:
+- Рекомендація + макет:
+- Критерій готовності:
+`},
+ {id:"t-wcag",title:"Ручний чекліст доступності (WCAG 2.2 AA)",mod:"m6",desc:"Перевірки, які дизайнер робить сам за 20–30 хв, до та після автоматичних інструментів.",body:
+`# Чекліст доступності — [сторінка / флоу]
+
+## Клавіатура (Operable)
+- [ ] Усі інтерактивні елементи досяжні через Tab (2.1.1)
+- [ ] Порядок фокуса логічний (2.4.3)
+- [ ] Фокус завжди видимий, контраст ≥ 3:1 (2.4.7, 2.4.11)
+- [ ] Немає «пасток» фокуса; модалки закриваються Esc (2.1.2)
+- [ ] Є «Skip to content» для довгої навігації (2.4.1)
+- [ ] Немає зайвих Tab-зупинок (кейс із 19 кліками в меню!)
+
+## Візуальне (Perceivable)
+- [ ] Контраст тексту ≥ 4.5:1, великого ≥ 3:1 (1.4.3)
+- [ ] Контраст UI-елементів та іконок ≥ 3:1 (1.4.11)
+- [ ] Інформація не передається лише кольором (1.4.1)
+- [ ] Масштаб 200% без втрати контенту (1.4.4); reflow на 320px (1.4.10)
+- [ ] Цілі для кліку ≥ 24×24 px (2.5.8)
+
+## Контент і структура (Understandable / Robust)
+- [ ] Ієрархія заголовків H1→H2→H3 без пропусків (1.3.1)
+- [ ] Alt для змістовних зображень, порожній alt для декоративних (1.1.1)
+- [ ] Поля форм мають видимі лейбли, не лише placeholder (3.3.2)
+- [ ] Помилки описані текстом і підказують, як виправити (3.3.1, 3.3.3)
+- [ ] Посилання зрозумілі поза контекстом («Детальніше про доставку», а не «тут») (2.4.4)
+
+## Screen reader (NVDA / VoiceOver, 5 хв)
+- [ ] Навігація заголовками дає зрозумілу структуру
+- [ ] Кнопки та іконки мають зрозумілі назви
+- [ ] Статуси (завантаження, успіх) оголошуються
+
+## Порівняння з AI-перевіркою
+| Знайшла я | Знайшов Claude / інструмент | Чого я не бачила і чому |
+|-----------|-----------------------------|-------------------------|
+| | | |
+`},
+ {id:"t-dash",title:"Бриф дашборду",mod:"m7",desc:"Проєктуємо від рішень користувача, а не від наявних даних.",body:
+`# Бриф дашборду — [назва]
+
+## 1. Користувачі та рішення
+| Роль | Як часто дивиться | Яке рішення ухвалює | Яке питання ставить до даних |
+|------|-------------------|---------------------|------------------------------|
+| Диспетчер | щогодини | Додати автобус на рейс? | Які рейси заповнені > 90%? |
+
+## 2. Тип дашборду
+☐ Operational (зараз, дії)  ☐ Analytical (тренди, причини)  ☐ Strategic (KPI, керівництво)
+
+## 3. Метрики
+| Метрика | Формула | Джерело | Оновлення | Ціль / поріг | Порівняння з (період / план) |
+|---------|---------|---------|-----------|--------------|------------------------------|
+
+## 4. Ієрархія (зліва-згори → вниз-праворуч)
+1. Головне число / статус (KPI cards)
+2. Тренди
+3. Деталізація (таблиця, drill-down)
+
+## 5. Вибір візуалізацій
+| Питання | Тип графіка | Чому |
+|---------|-------------|------|
+
+## 6. Обмеження платформи
+- Платформа: Power BI / кастом / ...
+- Що реалізовно стандартними візуалами:
+- Що потребує custom visual / розробки:
+- Звички користувачів (Excel-first?):
+
+## 7. Стани
+☐ завантаження ☐ немає даних ☐ помилка джерела ☐ дані застарілі (час оновлення видно)
+
+## 8. Критерії успіху
+- Час, щоб знайти відповідь на головне питання: < __ сек
+`},
+ {id:"t-writing",title:"Voice & tone + глосарій + правила мікрокопі",mod:"m8",desc:"Мінімальний content guideline, який можна вбудувати в дизайн-систему.",body:
+`# Content Guidelines — [продукт / екосистема]
+
+## Voice (сталий характер)
+Ми — [3 прикметники], але не [3 антоніми-обмеження].
+Приклад: дружні, але не фамільярні; експертні, але не менторські.
+
+## Tone (4 виміри NN/g, позначити позицію 1–5)
+| Вимір | 1 ←→ 5 | Позиція |
+|-------|--------|---------|
+| Funny ↔ Serious | | |
+| Formal ↔ Casual | | |
+| Respectful ↔ Irreverent | | |
+| Enthusiastic ↔ Matter-of-fact | | |
+
+Тон за ситуаціями:
+| Ситуація | Тон | Приклад |
+|----------|-----|---------|
+| Онбординг | | |
+| Успіх | | |
+| Помилка | | |
+| Порожній стан | | |
+| Деструктивна дія | | |
+
+## Звернення
+- Ти / Ви: ___ (однаково в усіх продуктах)
+- Велика літера: лише перше слово в кнопках і заголовках
+
+## Глосарій
+| Термін ✓ | Не використовуємо ✗ | Визначення | Де використовується |
+|----------|---------------------|------------|---------------------|
+| Рослина | Культура, саджанець | | |
+
+## Правила мікрокопі
+- **Кнопки:** дієслово + об'єкт («Зберегти зміни»). Не «ОК / Так».
+- **Помилки:** що сталося + як виправити. Без «Помилка 500» на першому плані.
+- **Підтвердження деструктивних дій:** назва дії в кнопці («Видалити рослину»), а не «Так».
+- **Порожні стани:** пояснення + перша дія.
+- **Числа й дати:** формат ___
+
+## Do / Don't
+| ✓ Do | ✗ Don't |
+|------|---------|
+| | |
+`},
+ {id:"t-star",title:"STAR-картка кейсу",mod:"m9",desc:"Одна картка = одна історія на 1,5–2 хв. Зроби банк з 10 таких карток.",body:
+`# STAR — [коротка назва історії]
+Під які питання підходить: [аудит / аналітика / конфлікт / пріоритизація / ...]
+
+**S — Situation** (1–2 речення: продукт, домен, масштаб)
+-
+
+**T — Task** (ТВОЯ відповідальність і ціль)
+-
+
+**A — Action** (≈50% часу; що зробила ТИ, 3–4 кроки, назви методів)
+1.
+2.
+3.
+
+**R — Result** (цифра / рішення / наслідок)
+- Метрика:
+- Якщо немає цифри: що змінилось / яке рішення ухвалено / скільки зекономлено
+- Чого навчилась / що зробила б інакше:
+
+Тривалість вголос: ___ сек (ціль ≤ 120)
+
+---
+## Ідеї для банку історій
+1. DDPD: KPI tree від North Star, GA4, прогалини в даних
+2. MUI: технічні обмеження до UI → новий процес старту
+3. Логістика: discovery → hi-fi → клієнт переглянув процеси (зекономлені інвестиції)
+4. Доступність: 19 зайвих Tab-кліків, яких не знайшов техаудит
+5. Захист рішення перед розробником (handoff, JSON-токени)
+6. Пріоритизація конфліктних запитів
+7. Дизайн-система з нуля + аудит консистентності
+8. Петпроєкт: від особистої болі до опитування та інтерв'ю
+9. Менторство: викладання, реальні лендинги для бізнесу
+10. Дашборд рейсів: які рішення він підтримував
+`},
+ {id:"t-gap",title:"Формула відповіді «не робила, але…»",mod:"m9",desc:"Як чесно відповісти про прогалину і не втратити бали.",body:
+`# Відповідь на питання про досвід, якого немає
+
+## Формула (30–45 сек)
+1. **Чесно:** «Повноцінно на комерційному проєкті — ще ні».
+2. **Найближчий досвід:** «Найближче — [X], де я [дія]».
+3. **Знання методу:** «Якби робила зараз: [3 кроки за методологією]».
+4. **Рух:** «Зараз практикую це на [петпроєкт / курс] — вже [результат]».
+
+## Приклади
+**Користувацькі інтерв'ю**
+«На комерційних проєктах у класичному аутсорсі доступу до кінцевих користувачів не було — стейкхолдер-інтерв'ю я проводила разом з PM та BA. Зараз на власному продукті провела 5 інтерв'ю: склала дослідницький план, гайд без навідних питань, синтезувала через affinity mapping у 6 інсайтів і job stories».
+
+**Storyboard**
+«Окремим артефактом — ні, але сценарії з контекстом я описувала в CJM. Storyboard використала б для узгодження нової концепції зі стейкхолдерами, коли UI ще немає: 6 кадрів від тригера до результату».
+
+## Заборонені фрази
+✗ «Ні» (і тиша)  ✗ «Можливо, я плутаю»  ✗ «Самостійно ні, але AI…»
+✓ «Ця техніка відома мені як…»  ✓ «Я б підійшла так…»
+`},
+ {id:"t-matrix",title:"Матриця питань Senior (для тренування)",mod:"m9",desc:"Питання, які були на співбесіді, + самооцінка. Використовуй для mock-інтерв'ю щокварталу.",body:
+`# Матриця самооцінки — Senior UI/UX
+Оцінка: 1 — не знаю · 2 — теорія · 3 — робила з допомогою · 4 — роблю сама · 5 — можу навчити
+
+| Блок | Питання | Оцінка (дата 1) | Оцінка (дата 2) | STAR-історія # |
+|------|---------|-----------------|-----------------|----------------|
+| Scope of analysis | Онбординг на проєкт (з нуля vs існуючий) | | | |
+| Stakeholders | Stakeholder mapping | | | |
+| Audit | Аудит: метод, подача, пріоритизація | | | |
+| IA | Архітектура з нуля; card sorting, tree testing | | | |
+| Mapping | User flow, CJM, service blueprint | | | |
+| Research | Користувацькі інтерв'ю: підготовка, проведення, синтез | | | |
+| Research | Стейкхолдер-інтерв'ю | | | |
+| Models | Персони; презентація стейкхолдерам | | | |
+| Lifecycle | Full lifecycle / CJM | | | |
+| Storyboards | Storyboard | | | |
+| Prototyping | Low-fi / mid-fi; інтерактивні прототипи | | | |
+| Process | Double Diamond / Design Thinking / Lean UX | | | |
+| Data | KPI, аналітика | | | |
+| Content | UX writing, tone of voice, консистентність між продуктами | | | |
+| Motion | Інтерактивний дизайн, базова анімація | | | |
+| Visual / Info | Дашборди, Power BI | | | |
+| DS | Дизайн-системи, токени, бібліотеки (Material, MUI, Ant, Carbon) | | | |
+| Responsive | Responsive / adaptive / mobile | | | |
+| Testing | Юзабіліті-тести, фокус-групи | | | |
+| Handoff | Передача в розробку, перевірка реалізації | | | |
+| Tech | HTML / CSS / DevTools | | | |
+| Client | Комунікація з клієнтом, захист рішень | | | |
+| Leadership | Менторство | | | |
+| Prioritization | Конфліктні запити | | | |
+| Influence | Як сказати «ні» стейкхолдеру | | | |
+
+## Самоперевірка після mock-інтерв'ю
+- Середня тривалість відповіді: ___ (ціль ≤ 2 хв)
+- У скількох відповідях був результат / цифра: __ / __
+- Методи названо правильно: так / ні
+`}
+];
+
+const GAPS = [
+ ["Користувацькі дослідження","Інтерв'ю, тести, фокус-групи — не проводила; синтез описаний загально","crit"],
+ ["Методологія та артефакти","Service blueprint не впізнала; storyboard — ні; proto-personas не названо","high"],
+ ["Стейкхолдери та фасилітація","Немає методу мапінгу; інтерв'ю вели PM та BA; пасивна позиція","high"],
+ ["Аудит","Не відповіла про подачу та пріоритизацію; немає severity; доступність через AI","high"],
+ ["Подача і метрики","Довгі відповіді, мало цифр, самоприменшення","high"],
+ ["Data viz / Power BI","Базовий рівень; цільовий проєкт — дашборди","high"],
+ ["Інформаційна архітектура","Card sorting «самостійно», немає tree testing","mid"],
+ ["UX writing","Немає системного підходу до консистентності","mid"]
+];
+
+const QUARTERLY = [
+ "Пройти всі флешкартки (вкладка «Повторення»), позначити слабкі модулі",
+ "Самооцінка за матрицею Senior (шаблон «Матриця питань») і порівняння з минулим кварталом",
+ "Міні-аудит одного нового продукту за евристиками та WCAG (60 хв)",
+ "Оновити 1 STAR-історію новими результатами",
+ "Mock-інтерв'ю: 5 випадкових питань із матриці, запис і перегляд",
+ "Обрати 1 модуль, який повторити циклом 2 на новому домені"
+];
+
+/* ======================= STATE ======================= */
+const KEY = "ux-senior-roadmap-v1";
+let S = {done:{}, notes:{}, cards:{}};
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+
+const modById = Object.fromEntries(MODULES.map(m=>[m.id,m]));
+const tplById = Object.fromEntries(TEMPLATES.map(t=>[t.id,t]));
+const PRL = {crit:"Критично",high:"Високий",mid:"Середній"};
+
+// ordered sessions with ids & week numbers
+const ORDERED = [];
+[1,2,3].forEach(r=>{
+  ROUND_ORDER[r].forEach(mid=>{
+    SESSIONS.filter(s=>s.r===r && s.m===mid).forEach(s=>ORDERED.push(s));
+  });
+});
+ORDERED.forEach((s,i)=>{ s.id = "s"+(i+1); s.week = i+1; });
+
+/* ======================= HELPERS ======================= */
+const $ = s => document.querySelector(s);
+function el(tag, attrs={}, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)){
+    if (k==="class") e.className=v; else if (k==="html") e.innerHTML=v; else if (k.startsWith("on")) e.addEventListener(k.slice(2),v); else e.setAttribute(k,v);
+  }
+  kids.flat().forEach(k=>{ if(k==null) return; e.append(k.nodeType? k : document.createTextNode(k)); });
+  return e;
+}
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1800); }
+function copyText(txt){
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt).then(()=>toast("Скопійовано"));
+  const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast("Скопійовано"); }catch(e){ toast("Не вдалося скопіювати"); }
+  ta.remove();
+}
+function download(name, txt, type="text/markdown"){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([txt],{type:type+";charset=utf-8"})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function tplButton(id){ const t=tplById[id]; if(!t) return null; return el("button",{class:"tlink",onclick:()=>openTpl(id)},"📄 "+t.title); }
+
+/* ======================= OVERVIEW ======================= */
+function renderStats(){
+  const total=ORDERED.length, done=ORDERED.filter(s=>S.done[s.id]).length;
+  const cur = ORDERED.find(s=>!S.done[s.id]);
+  const byR = r=>{ const a=ORDERED.filter(s=>s.r===r); return [a.filter(s=>S.done[s.id]).length, a.length]; };
+  const known = Object.values(S.cards).filter(c=>c.k>0).length, allCards = MODULES.reduce((n,m)=>n+m.cards.length,0);
+  const box = $("#stats"); box.innerHTML="";
+  const pct = Math.round(done/total*100);
+  box.append(
+    el("div",{class:"card"}, el("div",{class:"muted"},"Загальний прогрес"), el("div",{class:"stat"}, pct+"%"), el("div",{class:"muted"}, done+" з "+total+" сесій"), el("div",{class:"bar"}, el("i",{style:"width:"+pct+"%"}))),
+    el("div",{class:"card"}, el("div",{class:"muted"},"Цикли"),
+      ...[1,2,3].map(r=>{ const [d,t]=byR(r); return el("div",{style:"margin-top:6px"}, el("span",{class:"pill r"+r},"Цикл "+r)," ", d+"/"+t, el("div",{class:"bar"}, el("i",{style:"width:"+Math.round(d/t*100)+"%;background:var(--r"+r+")"}))); })),
+    el("div",{class:"card"}, el("div",{class:"muted"},"Поточна сесія"),
+      cur ? [el("div",{class:"stat",style:"font-size:20px;margin-top:4px"}, "Тиждень "+cur.week), el("div",{}, cur.t), el("div",{class:"muted",style:"font-size:13px"}, modById[cur.m].title),
+             el("button",{class:"btn primary",style:"margin-top:10px",onclick:()=>{go("route"); setTimeout(scrollCurrent,50);}},"Відкрити")]
+          : el("div",{class:"stat"},"🎉 Усе пройдено — час для циклу ∞")),
+    el("div",{class:"card"}, el("div",{class:"muted"},"Флешкартки"), el("div",{class:"stat"}, known+"/"+allCards), el("div",{class:"muted"},"позначено «Знаю» хоча б раз"),
+      el("div",{class:"muted",style:"font-size:13px;margin-top:8px"},"Темп: ~"+total+" тижнів ≈ "+Math.round(total/4.3)+" міс. при 1 сесії на тиждень"))
+  );
+}
+function renderGaps(){
+  const tb=$("#gapTable tbody"); tb.innerHTML="";
+  GAPS.forEach(g=>tb.append(el("tr",{}, el("td",{},el("b",{},g[0])), el("td",{class:"muted"},g[1]), el("td",{}, el("span",{class:"pill "+g[2]},PRL[g[2]])))));
+}
+
+/* ======================= ROUTE ======================= */
+const RN = {1:"Цикл 1 · Фундамент",2:"Цикл 2 · Практика",3:"Цикл 3 · Подача"};
+function renderRoute(){
+  const fr=$("#fRound").value, fm=$("#fMod").value, hide=$("#fHide").checked;
+  const cur = ORDERED.find(s=>!S.done[s.id]);
+  const list=$("#routeList"); list.innerHTML="";
+  let lastR=null;
+  ORDERED.forEach(s=>{
+    if (fr && String(s.r)!==fr) return;
+    if (fm && s.m!==fm) return;
+    if (hide && S.done[s.id]) return;
+    if (s.r!==lastR){ lastR=s.r; const rs=ORDERED.filter(x=>x.r===s.r);
+      list.append(el("div",{class:"roundhead"}, el("h2",{},RN[s.r]), el("span",{class:"muted"}, rs.filter(x=>S.done[x.id]).length+"/"+rs.length))); }
+    const m=modById[s.m];
+    const cb=el("input",{type:"checkbox","aria-label":"Виконано"}); cb.checked=!!S.done[s.id];
+    cb.addEventListener("change",()=>{ if(cb.checked) S.done[s.id]=new Date().toISOString().slice(0,10); else delete S.done[s.id]; save(); renderRoute(); renderStats(); renderModules(true); });
+    const body=el("div",{},
+      el("div",{class:"wmeta"}, el("span",{},"Тиждень "+s.week), el("span",{class:"pill r"+s.r},"Ц"+s.r), el("span",{class:"pill "+m.pr},"М"+m.n+" · "+m.title), S.done[s.id]? el("span",{class:"pill",style:"color:var(--ok)"},"✓ "+S.done[s.id]) : null),
+      el("div",{class:"wt"}, s.t),
+      el("div",{class:"wbody"},
+        el("div",{class:"row"}, el("b",{},"Теорія: "), s.th),
+        el("div",{class:"row"}, el("b",{},"Практика: "), s.pr),
+        el("div",{class:"row"}, el("b",{},"Артефакт: "), s.out),
+        s.tp.length? el("div",{class:"row"}, ...s.tp.map(tplButton)) : null)
+    );
+    list.append(el("div",{class:"week"+(S.done[s.id]?" done":"")+(cur&&cur.id===s.id?" current":""), id:"w-"+s.id}, cb, body));
+  });
+  if (!list.children.length) list.append(el("p",{class:"muted"},"Нічого не знайдено за фільтрами."));
+}
+function scrollCurrent(){ const cur=ORDERED.find(s=>!S.done[s.id]); if(!cur) return;
+  $("#fRound").value=""; $("#fMod").value=""; $("#fHide").checked=false; renderRoute();
+  const n=document.getElementById("w-"+cur.id); if(n) n.scrollIntoView({behavior:"smooth",block:"center"}); }
+
+/* ======================= MODULES ======================= */
+function renderModules(keepOpen){
+  const open = keepOpen ? [...document.querySelectorAll("details.mod[open]")].map(d=>d.dataset.id) : [];
+  const box=$("#modList"); box.innerHTML="";
+  MODULES.forEach(m=>{
+    const ss=ORDERED.filter(s=>s.m===m.id), d=ss.filter(s=>S.done[s.id]).length;
+    const notes=el("textarea",{placeholder:"Нотатки, інсайти, посилання на артефакти…"}); notes.value=S.notes[m.id]||"";
+    const saved=el("div",{class:"note-saved"});
+    notes.addEventListener("input",()=>{ S.notes[m.id]=notes.value; save(); saved.textContent="Збережено"; clearTimeout(notes._h); notes._h=setTimeout(()=>saved.textContent="",1200); });
+    const det=el("details",{class:"mod","data-id":m.id},
+      el("summary",{}, el("span",{class:"num"},m.n), el("span",{class:"ttl"}, m.title, el("small",{},m.sub)), el("span",{class:"pill "+m.pr},PRL[m.pr]), el("span",{class:"muted",style:"font-size:13px;min-width:44px;text-align:right"}, d+"/"+ss.length)),
+      el("div",{class:"modbody"},
+        el("div",{class:"why"}, el("b",{},"Чому в плані: "), m.why),
+        el("div",{class:"grid g2"},
+          el("div",{}, el("div",{class:"kv"},"Цілі модуля"), el("ul",{class:"clean"}, ...m.goals.map(g=>el("li",{},g)))),
+          el("div",{}, m.theory.length? el("div",{class:"kv"},"Теорія онлайн"):null, m.theory.length? el("ul",{class:"clean src"}, ...m.theory.map(([t,u])=>el("li",{}, el("a",{href:u,target:"_blank",rel:"noopener"},t)))):null,
+            el("div",{class:"kv",style:"margin-top:12px"},"Книги"), el("ul",{class:"clean"}, ...m.books.map(b=>el("li",{},b))))),
+        el("div",{}, el("div",{class:"kv"},"Шаблони"), ...m.tpl.map(tplButton)),
+        el("div",{}, el("div",{class:"kv"},"Сесії модуля"), el("ul",{class:"clean"}, ...ss.map(s=>el("li",{}, (S.done[s.id]?"✅ ":"⬜ ")+"Тиждень "+s.week+" · Ц"+s.r+" · "+s.t)))),
+        el("div",{}, el("div",{class:"kv"},"Флешкартки (клацни, щоб перевернути)"), el("div",{class:"fc-wrap"}, ...m.cards.map(c=>{ const f=el("div",{class:"fc"}, el("div",{class:"in"}, el("div",{class:"f"},c[0]), el("div",{class:"b"},c[1]))); f.addEventListener("click",()=>f.classList.toggle("flip")); return f; }))),
+        el("div",{}, el("div",{class:"kv"},"Мої нотатки"), notes, saved)
+      ));
+    if (open.includes(m.id)) det.open=true;
+    box.append(det);
+  });
+}
+
+/* ======================= TEMPLATES ======================= */
+let curTpl = TEMPLATES[0].id;
+function renderTplList(){
+  const box=$("#tplList"); box.innerHTML="";
+  TEMPLATES.forEach(t=>box.append(el("button",{class:t.id===curTpl?"active":"",onclick:()=>{curTpl=t.id; renderTplList(); renderTpl();}}, t.title, el("small",{},"М"+modById[t.mod].n+" · "+modById[t.mod].title))));
+}
+function renderTpl(){ const t=tplById[curTpl]; $("#tplTitle").textContent=t.title; $("#tplDesc").textContent=t.desc; $("#tplBody").textContent=t.body; }
+function openTpl(id){ curTpl=id; go("templates"); renderTplList(); renderTpl(); window.scrollTo({top:0}); }
+$("#tplCopy").addEventListener("click",()=>copyText(tplById[curTpl].body));
+$("#tplDl").addEventListener("click",()=>download(curTpl.replace("t-","")+".md", tplById[curTpl].body));
+
+/* ======================= REVIEW ======================= */
+let deck=[], cur=null;
+function cardKey(mid,i){ return mid+":"+i; }
+function buildDeck(){
+  const fm=$("#rMod").value; deck=[];
+  MODULES.forEach(m=>{ if(fm && m.id!==fm) return; m.cards.forEach((c,i)=>{ const k=cardKey(m.id,i), st=S.cards[k]||{k:0,a:0}; const w = 1 + st.a*2 - Math.min(st.k,3)*0.25; deck.push({k,m,c,w:Math.max(.3,w)}); }); });
+}
+function nextCard(){
+  buildDeck(); if(!deck.length) return;
+  const sum=deck.reduce((n,d)=>n+d.w,0); let r=Math.random()*sum, pick=deck[0];
+  for(const d of deck){ r-=d.w; if(r<=0){pick=d;break;} }
+  if (cur && deck.length>1 && pick.k===cur.k) return nextCard();
+  cur=pick; $("#rCard").classList.remove("flip");
+  $("#rFront").textContent=pick.c[0]; $("#rBack").textContent=pick.c[1];
+  const known=deck.filter(d=>(S.cards[d.k]||{}).k>0).length, again=deck.filter(d=>(S.cards[d.k]||{}).a>0).length;
+  $("#rStat").textContent="М"+pick.m.n+" · "+pick.m.title+" · знаю: "+known+"/"+deck.length+" · на повтор: "+again;
+}
+function mark(ok){ if(!cur) return; const st=S.cards[cur.k]||{k:0,a:0}; if(ok){ st.k++; st.a=Math.max(0,st.a-1);} else st.a++; S.cards[cur.k]=st; save(); renderStats(); nextCard(); }
+$("#rCard").addEventListener("click",()=>$("#rCard").classList.toggle("flip"));
+$("#rKnow").addEventListener("click",()=>mark(true));
+$("#rAgain").addEventListener("click",()=>mark(false));
+$("#rMod").addEventListener("change",()=>{cur=null; nextCard();});
+$("#rReset").addEventListener("click",()=>{ if(confirmInline("rReset")){ S.cards={}; save(); renderStats(); nextCard(); toast("Статистику карток скинуто"); }});
+
+/* inline confirm (no browser dialogs): first click arms, second confirms */
+function confirmInline(id){ const b=document.getElementById(id); if(b.dataset.armed){ delete b.dataset.armed; b.textContent=b.dataset.orig; return true; }
+  b.dataset.orig=b.textContent; b.dataset.armed="1"; b.textContent="Натисни ще раз для підтвердження"; setTimeout(()=>{ if(b.dataset.armed){ delete b.dataset.armed; b.textContent=b.dataset.orig; } },3000); return false; }
+
+/* ======================= NAV ======================= */
+const VIEWS=["overview","route","modules","templates","review"];
+function go(v){ if(!VIEWS.includes(v)) v="overview";
+  document.querySelectorAll("section.view").forEach(s=>s.classList.toggle("active",s.id===v));
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.view===v));
+  // replaceState is blocked in sandboxed previews (about:srcdoc); the page works without it
+  try { if (location.hash!=="#"+v && location.protocol.startsWith("http")) history.replaceState(null,"","#"+v); } catch(e) {}
+  if (v==="review" && !cur) nextCard();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{ go(b.dataset.view); window.scrollTo({top:0}); }));
+window.addEventListener("hashchange",()=>go(location.hash.slice(1)));
+
+/* ======================= IMPORT / EXPORT ======================= */
+$("#exp").addEventListener("click",()=>download("ux-roadmap-progress-"+new Date().toISOString().slice(0,10)+".json", JSON.stringify(S,null,2), "application/json"));
+$("#imp").addEventListener("change",e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{ try{ const d=JSON.parse(r.result); S={done:d.done||{},notes:d.notes||{},cards:d.cards||{}}; save(); renderAll(); toast("Прогрес імпортовано"); }catch(err){ toast("Невірний файл"); } };
+  r.readAsText(f); e.target.value=""; });
+$("#wipe").addEventListener("click",()=>{ if(confirmInline("wipe")){ S={done:{},notes:{},cards:{}}; save(); renderAll(); toast("Прогрес очищено"); }});
+
+/* ======================= INIT ======================= */
+function renderAll(){ renderStats(); renderGaps(); renderRoute(); renderModules(); renderTplList(); renderTpl(); cur=null; nextCard(); }
+MODULES.forEach(m=>{ $("#fMod").append(el("option",{value:m.id},"М"+m.n+" · "+m.title)); $("#rMod").append(el("option",{value:m.id},"М"+m.n+" · "+m.title)); });
+QUARTERLY.forEach(q=>$("#quarterly").append(el("li",{},q)));
+["fRound","fMod","fHide"].forEach(id=>$("#"+id).addEventListener("change",renderRoute));
+$("#goCurrent").addEventListener("click",scrollCurrent);
+renderAll();
+go(location.hash.slice(1)||"overview");
+</script>
+</body>
+</html>
